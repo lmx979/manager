@@ -13,10 +13,13 @@ import "element-plus/dist/index.css";
 import request from "./utils/request";
 // 引入封装的storage
 import storage from "./utils/storage";
+// 引入封装的store
+import store from "./store";
 
 const app = createApp(App);
 // 使用路由
 app.use(router);
+app.use(store);
 // 使用element-plus
 app.use(ElementPlus);
 // 全局挂载变量

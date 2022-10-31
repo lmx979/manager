@@ -73,6 +73,10 @@ function request(options) {
     // 传参时都传递data，虽然get需要的是param，可以进行转换
     options.params = options.data;
   }
+  // 局部设置mock
+  if (typeof options.mock !== "undefined") {
+    config.mock = options.mock;
+  }
   // 如果是生成环境，一定要调线上的正式的api
   if (config.env === "prod") {
     service.defaults.baseURL = config.baseApi;

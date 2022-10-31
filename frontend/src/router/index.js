@@ -4,8 +4,6 @@ import { createRouter, createWebHashHistory } from "vue-router";
 // 引入路由需要的组件
 import Home from "../components/Home.vue";
 import Welcome from "../components/Welcome.vue";
-import Login from "../components/Login.vue";
-import Register from "../components/Register.vue";
 
 // 定义路由规则
 const routes = [
@@ -30,25 +28,25 @@ const routes = [
           title: "欢迎页",
         },
       },
-      // 登录页
-      {
-        name: "Login",
-        path: "/login",
-        component: Login,
-        meta: {
-          title: "登录页",
-        },
-      },
-      // 注册页
-      {
-        name: "Register",
-        path: "/register",
-        component: Register,
-        meta: {
-          title: "注册页",
-        },
-      },
     ],
+  },
+  // 登录页
+  {
+    name: "Login",
+    path: "/login",
+    component: () => import("../views/Login.vue"),
+    meta: {
+      title: "登录页",
+    },
+  },
+  // 注册页
+  {
+    name: "Register",
+    path: "/register",
+    component: () => import("../views/Register.vue"),
+    meta: {
+      title: "注册页",
+    },
   },
 ];
 

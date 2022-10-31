@@ -11,7 +11,8 @@ const env = import.meta.env.MODE === "development" ? "dev" : "prod";
 const EnvConfig = {
   // 开发环境
   dev: {
-    baseApi: "/api",
+    // 直接访问后端接口根路径
+    baseApi: "//localhost:3000",
     mockApi: "https://www.fastmock.site/mock/81adf08f799f9107f501e3e1d90cebba/api",
   },
   // 生产环境

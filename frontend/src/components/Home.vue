@@ -32,7 +32,6 @@ export default {
 <style lang="scss" scoped>
 .basic-layout {
 
-    // 左侧导航栏
     .nav-side {
         position: fixed;
         width: 200px;
@@ -43,11 +42,9 @@ export default {
         transition: width 0.5s;
     }
 
-    // 右侧内容区
     .content {
         margin-left: 200px;
 
-        // 顶部导航
         .nav-top {
             height: 50px;
             line-height: 50px;
@@ -57,7 +54,6 @@ export default {
             border-bottom: 1px solid #ddd;
         }
 
-        // 主内容区
         .wrapper {
             background-color: #eef0f3;
             padding: 20px;
