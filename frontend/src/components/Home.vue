@@ -26,7 +26,7 @@
                         <Expand />
                     </el-icon>
                     <!-- 面包屑导航 -->
-                    <div class="bread">面包屑导航</div>
+                    <div class="bread"><BreadCrumb /></div>
                 </div>
                 <!-- 用户信息 -->
                 <div class="user-info">
@@ -67,6 +67,7 @@ import { onMounted } from "vue"
 // 导入api：表单验证成功后，进行ajax请求
 import api from "../api"
 import Menu from "./Menu.vue"
+import BreadCrumb from "./BreadCrumb.vue"
 const store = useStore()
 const router = useRouter()
 // 从vuex中获取用户信息
