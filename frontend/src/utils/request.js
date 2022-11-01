@@ -1,4 +1,4 @@
-/*
+/**
  * axios二次封装
  * @date 2022年10月30日23点07分
  * @author Lmxx
@@ -59,7 +59,7 @@ service.interceptors.response.use((res) => {
   }
 });
 
-/*
+/**
  * 请求的核心参数
  * @param {*} optinos
  * @returns axios实例

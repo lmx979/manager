@@ -1,4 +1,4 @@
-/*
+/**
  * 后台通用的工具函数
  * @date 2022年10月31日21点47分
  * @author Lumxx
@@ -14,7 +14,7 @@ const CODE = {
   AUTH_ERROR: 5001, // 认证失败或Token过期
 };
 
-/*
+/**
  * 分页结构
  * @param {object} pageNum第几页，pageSize每页多少条
  */
@@ -35,7 +35,7 @@ function pager({ pageNum = 1, pageSize = 10 }) {
 // 导入封装好的日志对象
 const myLog = require("./myLog");
 
-/*
+/**
  * 成功请求的封装，第一个参数data，方便调用时传参，code默认成功，可以不传
  * @param {object} data数据
  * @param {string} msg信息
@@ -48,7 +48,7 @@ function success(data = "", msg = "", code = CODE.SUCCESS) {
   return { data, msg, code };
 }
 
-/*
+/**
  * 错误请求的封装，第一个参数msg，方便调用时传参，默认错误码为业务请求失败，错误状态下，data默认为空
  * @param {string} msg信息
  * @param {number} code错误码

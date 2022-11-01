@@ -1,4 +1,4 @@
-/*
+/**
  * storage二次封装
  * @date 2022年10月31日00点32分
  * @author Lumxx

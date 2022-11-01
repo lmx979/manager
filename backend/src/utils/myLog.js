@@ -1,4 +1,4 @@
-/*
+/**
  * 日志存储封装
  * @date 2022年10月31日20点38分
  * @author Lumxx
@@ -97,7 +97,7 @@ log4js.configure({
   },
 });
 
-/*
+/**
  * 日志输出
  * @param {string} content输出的日志内容
  */
