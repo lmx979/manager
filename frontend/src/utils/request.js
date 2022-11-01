@@ -42,7 +42,7 @@ service.interceptors.response.use((res) => {
   // 从响应的数据中获取code,data,msg
   const { code, data, msg } = res.data;
   // 如果状态码为200，直接返回data
-  if (code === 200) {
+  if (code === 200 || code === 0) {
     return data;
   } else if (code === 5001) {
     // 错误码5001，报错，返回错误信息

@@ -6,8 +6,8 @@
 
 // 引入request
 import request from "../utils/request";
-// 导出login方法
 export default {
+  // 导出login
   login(params) {
     // 调用request
     return request({
@@ -15,6 +15,24 @@ export default {
       url: "/users/login", // 请求路径
       data: params, // 携带数据
       mock: false, // 局部mock设置，优先级更高，是否走mock接口
+    });
+  },
+  // 导出消息数量
+  noticeCount() {
+    return request({
+      method: "get",
+      url: "notice/count",
+      data: {},
+      mock: true,
+    });
+  },
+  // 导出菜单列表
+  menuList() {
+    return request({
+      methos: "get",
+      url: "/menu/list",
+      data: {},
+      mock: true,
     });
   },
 };

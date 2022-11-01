@@ -24,7 +24,7 @@
 
 <script setup>
 // 引入ref：生产响应式数据
-import { ref } from "vue"
+import { reactive, ref } from "vue"
 // 导入useRouter：路由跳转
 import { useRouter } from "vue-router";
 // 导入api：表单验证成功后，进行ajax请求
@@ -38,7 +38,7 @@ const router = useRouter();
 // 创建store
 const store = useStore();
 // 定义表单的用户数据
-const user = ref({ userName: "", userPassword: "" });
+const user = reactive({ userName: "", userPassword: "" });
 // 在setup中，获取模板的引用将存储在名字匹配的ref中
 const userFormRef = ref();
 // 定义表单的验证规则
