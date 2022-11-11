@@ -12,6 +12,8 @@ import { ElMessage } from "element-plus";
 import config from "../config/index";
 // 导入路由
 import router from "../router/index";
+// 导入storage
+import storage from "../utils/storage";
 
 // 定义错误信息
 const TOKEN_INVALID = "Token认证失败，请重新登录！";
@@ -31,7 +33,10 @@ service.interceptors.request.use((req) => {
   const headers = req.headers;
   // 如果请求头中没有验证信息，给个默认值
   if (!headers.Authorization) {
-    headers.Authorization = "hello";
+    // 从localstorage中获取token
+    const { token } = storage.getItem("userInfo") || "hello";
+    // 在请求头中，携带token
+    headers.Authorization = "Bearer" + token;
   }
   // 返回请求信息
   return req;

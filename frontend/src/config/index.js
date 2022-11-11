@@ -27,7 +27,7 @@ export default {
   // 当前环境为开发环境
   env: env,
   // 是否需要mock接口（临时用的测试接口）
-  mock: true,
+  mock: false,
   // storage的命名空间
   namespace: "manager",
   // 接口调用地址，解构即可

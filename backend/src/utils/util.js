@@ -61,4 +61,4 @@ function fail(msg = "", code = CODE.BUSINESS_ERROR, data = "") {
 }
 
 // 导出
-module.exports = { pager, success, fail };
+module.exports = { pager, success, fail, CODE };

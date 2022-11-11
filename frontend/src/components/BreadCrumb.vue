@@ -11,7 +11,6 @@
 import { computed } from "@vue/runtime-core"
 import { useRoute } from 'vue-router'
 const route = useRoute()
-console.log(route.matched);
 const breadList = computed(() => {
     return route.matched
 })

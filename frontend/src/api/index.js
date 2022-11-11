@@ -17,11 +17,11 @@ export default {
       mock: false, // 局部mock设置，优先级更高，是否走mock接口
     });
   },
-  // 导出消息数量
+  // 导出消息数量 C:\software\MongoDB\Server\bin
   noticeCount() {
     return request({
       method: "get",
-      url: "notice/count",
+      url: "/notice/count",
       data: {},
       mock: true,
     });
