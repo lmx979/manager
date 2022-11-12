@@ -93,7 +93,8 @@ a {
     }
 
     .pagination {
-        text-align: right;
         padding: 10px;
+        display: flex;
+        justify-content: flex-end;
     }
 }

@@ -37,6 +37,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-pagination class="pagination" small layout="prev, pager, next" :page-size="pager.pageSize" :total="pager.total || 0" @current-change="handleCurrentChange" hide-on-single-page />
         </div>
     </div>
 </template>
@@ -44,13 +45,13 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import api from "../api";
-// 查询用户属性
+// 查询用户
 const user = reactive({
     userId: "",
     userName: "",
     state: 0
 })
-// 表格字段属性
+// 表格字段
 const columns = reactive([
     {
         label: "用户ID",
@@ -85,16 +86,28 @@ const columns = reactive([
 onMounted(() => {
     getUserList();
 })
-// 定义用户列表属性
+// 用户列表
 const userList = ref([])
-// 获取用户列表
+// 分页
+const pager = ref([])
+// 获取用户列表和分页信息
 function getUserList() {
-    api.userList().then((res) => {
+    // 设置参数
+    const params = { ...pager.value }
+    api.userList(params).then((res) => {
         // 解构
         const { list, page } = res
         // 更新数据
         userList.value = list
+        pager.value = page
     })
+}
+// 翻页函数
+const handleCurrentChange = (val) => {
+    // 更新页数
+    pager.pageNum = val
+    // 请求接口
+    getUserList()
 }
 </script>
 
