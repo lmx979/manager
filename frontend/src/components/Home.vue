@@ -219,7 +219,6 @@ const handleCommand = (key) => {
             height: calc(100vh - 50px);
 
             .main-page {
-                background-color: #fff;
                 height: 100%;
             }
         }

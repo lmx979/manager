@@ -18,19 +18,22 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary">查询</el-button>
-                    <el-button type="danger">重置</el-button>
+                    <el-button type="default">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="base-table">
-            <div class="action"></div>
+            <div class="action">
+                <el-button type="primary">查询</el-button>
+                <el-button type="danger">删除</el-button>
+            </div>
             <el-table :data="userList" style="width:100%">
                 <el-table-column type="selection" width="55" />
                 <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" />
-                <el-table-column fixed="right" lable="操作" width="120">
+                <el-table-column label="操作" width="150">
                     <template #default>
-                        <el-button link type="primary" size="small" @click="handleClick">删除</el-button>
-                        <el-button link type="primary" size="small">编辑</el-button>
+                        <el-button type="info">编辑</el-button>
+                        <el-button type="danger">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
