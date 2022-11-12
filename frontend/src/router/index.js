@@ -28,6 +28,24 @@ const routes = [
           title: "欢迎页",
         },
       },
+      // 导航栏
+      {
+        name: "System", // 系统管理
+        path: "/system",
+        meta: {
+          title: "系统管理",
+        },
+        children: [
+          {
+            name: "User", // 用户管理
+            path: "/system/user",
+            component: () => import("../components/User.vue"),
+            meta: {
+              title: "用户管理",
+            },
+          },
+        ],
+      },
     ],
   },
   // 登录页

@@ -8,7 +8,7 @@
                 <span>Manager</span>
             </div>
             <!-- 导航菜单 -->
-            <el-menu background-color="#001529" text-color="#fff" :collapse="isCollapse">
+            <el-menu default-active="route.path" background-color="#001529" text-color="#fff" :collapse="isCollapse" router>
                 <!-- 将定义好的菜单数据传递给子组件 -->
                 <Menu :menuList="menuList" />
             </el-menu>
@@ -26,7 +26,9 @@
                         <Expand />
                     </el-icon>
                     <!-- 面包屑导航 -->
-                    <div class="bread"><BreadCrumb /></div>
+                    <div class="bread">
+                        <BreadCrumb />
+                    </div>
                 </div>
                 <!-- 用户信息 -->
                 <div class="user-info">
@@ -60,7 +62,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 import { useStore } from "vuex"
 // 生命周期函数，组件挂载后触发
 import { onMounted } from "vue"
@@ -70,6 +72,7 @@ import Menu from "./Menu.vue"
 import BreadCrumb from "./BreadCrumb.vue"
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 // 从vuex中获取用户信息
 const userInfo = store.state.userInfo
 // 组件挂载之后触发获取
