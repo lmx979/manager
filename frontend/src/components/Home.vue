@@ -60,13 +60,10 @@
     </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue"
+<script setup>
+import { ref, onMounted } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import { useStore } from "vuex"
-// 生命周期函数，组件挂载后触发
-import { onMounted } from "vue"
-// 导入api：表单验证成功后，进行ajax请求
 import api from "../api"
 import Menu from "./Menu.vue"
 import BreadCrumb from "./BreadCrumb.vue"
@@ -75,11 +72,9 @@ const router = useRouter()
 const route = useRoute()
 // 从vuex中获取用户信息
 const userInfo = store.state.userInfo
-// 组件挂载之后触发获取
+// 生命周期函数，组件挂载之后触发获取
 onMounted(() => {
-    // 自动触发获取消息数量函数
     getNoticeCount()
-    // 获取菜单列表
     getMenuList()
 })
 // 定义左侧列表

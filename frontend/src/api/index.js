@@ -17,7 +17,16 @@ export default {
       mock: false, // 局部mock设置，优先级更高，是否走mock接口
     });
   },
-  // 导出消息数量 C:\software\MongoDB\Server\bin
+  // 导出菜单列表
+  menuList() {
+    return request({
+      methos: "get",
+      url: "/menu/list",
+      data: {},
+      mock: true,
+    });
+  },
+  // 导出消息数量
   noticeCount() {
     return request({
       method: "get",
@@ -26,12 +35,12 @@ export default {
       mock: true,
     });
   },
-  // 导出菜单列表
-  menuList() {
+  // 获取用户列表
+  userList(params) {
     return request({
-      methos: "get",
-      url: "/menu/list",
-      data: {},
+      method: "get",
+      url: "/users/list",
+      data: params,
       mock: true,
     });
   },

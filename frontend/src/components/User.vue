@@ -42,12 +42,15 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
+import api from "../api";
+// 查询用户属性
 const user = reactive({
     userId: "",
     userName: "",
     state: 0
 })
+// 表格字段属性
 const columns = reactive([
     {
         label: "用户ID",
@@ -78,22 +81,21 @@ const columns = reactive([
         prop: "lastLoginTime"
     }
 ])
-const userList = ref([
-    {
-        state: 1,
-        role: "0",
-        roleList: ["60180b07b1eaed6c45fbebdb", "60150cb764de99631b2c3cd3", "60180b59b1eaed6c45fbebdc"],
-        deptId: ["60167059c9027b7d2c520a61", "60167345c6a4417f2d27506f"],
-        userId: 1000002,
-        userName: "admin",
-        userEmail: "admin@126.com",
-        createTime: "2021-01-17T13:32:06.381Z",
-        lastLoginTime: "2021-01-17T13:32:06.381Z",
-        __v: 0,
-        job: "前端架构师",
-        mobile: "17611020000"
-    }
-])
+// 组件挂载后触发
+onMounted(() => {
+    getUserList();
+})
+// 定义用户列表属性
+const userList = ref([])
+// 获取用户列表
+function getUserList() {
+    api.userList().then((res) => {
+        // 解构
+        const { list, page } = res
+        // 更新数据
+        userList.value = list
+    })
+}
 </script>
 
 <style lang="scss" scoped>
