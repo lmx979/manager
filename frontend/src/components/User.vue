@@ -29,10 +29,10 @@
                 <el-button type="primary">新增用户</el-button>
                 <el-button type="danger" @click="multiDalete">批量删除</el-button>
             </div>
-            <el-table border stripe :data="userList" style="width:100%" ref="multiTableRef" @selection-change="handleSelectionChange">
-                <el-table-column align="center" type="selection" width="50" />
-                <el-table-column align="center" show-overflow-tooltip v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" />
-                <el-table-column align="center" label="操作" width="130" fixed="right">
+            <el-table stripe :data="userList" style="width:100%" ref="multiTableRef" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="30" />
+                <el-table-column show-overflow-tooltip v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" :formatter="item.formatter" />
+                <el-table-column label="操作" width="130" fixed="right">
                     <template #default="scope">
                         <el-button type="info">编辑</el-button>
                         <el-button type="danger" @click="handleDelete(scope.row.userId)">删除</el-button>
@@ -48,6 +48,7 @@
 import { ElMessage } from "element-plus";
 import { reactive, ref, onMounted } from "vue";
 import api from "../api";
+import util from "../utils/util"
 // 表单引用
 const form = ref();
 // 查询信息
@@ -59,36 +60,57 @@ const columns = reactive([
     {
         label: "用户ID",
         prop: "userId",
+        width: "100"
     },
     {
         label: "用户名",
         prop: "userName",
-        width: "120"
+        width: "150"
     },
     {
         label: "用户邮箱",
         prop: "userEmail",
-        width: "200"
     },
     {
         label: "用户角色",
         prop: "role",
-        width: "80"
+        width: "90",
+        formatter(row, column, value) {
+            const roleObj = {
+                0: "管理员",
+                1: "普通用户"
+            }
+            return roleObj[value]
+        }
     },
     {
         label: "用户状态",
         prop: "state",
-        width: "80"
+        width: "90",
+        formatter(row, column, value) {
+            const stateObj = {
+                1: "在职",
+                2: "离职",
+                3: "试用期"
+            }
+            return stateObj[value]
+        }
     },
     {
         label: "注册时间",
         prop: "createTime",
-        width: "180"
+        width: "150",
+        formatter(row, column, value) {
+            return util.utc2bj(value);
+        }
     },
     {
         label: "最后登录时间",
         prop: "lastLoginTime",
-        width: "180"
+        width: "150",
+        formatter(row, column, value) {
+            return util.utc2bj(value);
+        }
     }
 ])
 // 组件挂载后触发
