@@ -26,13 +26,13 @@
         <!-- 用户列表表格 -->
         <div class="base-table">
             <div class="action">
-                <el-button type="primary">查询</el-button>
-                <el-button type="danger">删除</el-button>
+                <el-button type="primary">添加用户</el-button>
+                <el-button type="danger">批量删除</el-button>
             </div>
-            <el-table :data="userList" style="width:100%">
-                <el-table-column type="selection" width="55" />
-                <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" />
-                <el-table-column label="操作" width="150">
+            <el-table border stripe :data="userList" style="width:100%">
+                <el-table-column align="center" type="selection" width="50" />
+                <el-table-column align="center" show-overflow-tooltip v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" />
+                <el-table-column align="center" label="操作" width="130" fixed="right">
                     <template #default>
                         <el-button type="info">编辑</el-button>
                         <el-button type="danger">删除</el-button>
@@ -57,31 +57,37 @@ const user = reactive({
 const columns = reactive([
     {
         label: "用户ID",
-        prop: "userId"
+        prop: "userId",
     },
     {
         label: "用户名",
-        prop: "userName"
+        prop: "userName",
+        width: "120"
     },
     {
         label: "用户邮箱",
-        prop: "userEmail"
+        prop: "userEmail",
+        width: "200"
     },
     {
         label: "用户角色",
-        prop: "role"
+        prop: "role",
+        width: "80"
     },
     {
         label: "用户状态",
-        prop: "state"
+        prop: "state",
+        width: "80"
     },
     {
         label: "注册时间",
-        prop: "createTime"
+        prop: "createTime",
+        width: "180"
     },
     {
         label: "最后登录时间",
-        prop: "lastLoginTime"
+        prop: "lastLoginTime",
+        width: "180"
     }
 ])
 // 组件挂载后触发
