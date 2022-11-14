@@ -158,7 +158,6 @@ function multiDalete() {
     const params = {
         userIds: checkedUserIds.value
     }
-    console.log(params.userIds);
     api.userDelete(params).then((res) => {
         if (res.nModified > 0) {
             ElMessage.success("批量删除成功")
