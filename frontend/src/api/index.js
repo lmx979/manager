@@ -7,7 +7,7 @@
 // 引入request
 import request from "../utils/request";
 export default {
-  // 导出login
+  // 用户登录
   login(params) {
     // 调用request
     return request({
@@ -40,6 +40,15 @@ export default {
     return request({
       method: "get",
       url: "/users/list",
+      data: params,
+      mock: true,
+    });
+  },
+  // 删除用户
+  userDelete(params) {
+    return request({
+      method: "delete",
+      url: "/users/delete",
       data: params,
       mock: true,
     });

@@ -19,23 +19,23 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleQuery">查询</el-button>
-                    <el-button type="danger" @click="handleReset(form)">重置</el-button>
+                    <el-button type="danger" @click="handleReset(formRef)">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <!-- 用户列表表格 -->
         <div class="base-table">
             <div class="action">
-                <el-button type="primary">添加用户</el-button>
-                <el-button type="danger">批量删除</el-button>
+                <el-button type="primary">新增用户</el-button>
+                <el-button type="danger" @click="multiDalete">批量删除</el-button>
             </div>
-            <el-table border stripe :data="userList" style="width:100%">
+            <el-table border stripe :data="userList" style="width:100%" ref="multiTableRef" @selection-change="handleSelectionChange">
                 <el-table-column align="center" type="selection" width="50" />
                 <el-table-column align="center" show-overflow-tooltip v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" />
                 <el-table-column align="center" label="操作" width="130" fixed="right">
-                    <template #default>
+                    <template #default="scope">
                         <el-button type="info">编辑</el-button>
-                        <el-button type="danger">删除</el-button>
+                        <el-button type="danger" @click="handleDelete(scope.row.userId)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -45,6 +45,7 @@
 </template>
 
 <script setup>
+import { ElMessage } from "element-plus";
 import { reactive, ref, onMounted } from "vue";
 import api from "../api";
 // 表单引用
@@ -126,6 +127,46 @@ function handleQuery() {
 function handleReset(form) {
     form.resetFields()
     getUserList()
+}
+// 删除用户
+function handleDelete(userId) {
+    const params = [userId]
+    api.userDelete(params).then((res) => {
+        if (res.nModified === 1) {
+            // 重新获取用户列表
+            getUserList()
+        }
+    })
+}
+// 选中的用户id
+const checkedUserIds = ref([])
+// 点击复选框触发函数
+const handleSelectionChange = (val) => {
+    // 定义数组存放选中的userId
+    const arr = []
+    val.forEach((el) => {
+        arr.push(el.userId)
+    })
+    checkedUserIds.value = arr
+};
+// 批量删除用户
+function multiDalete() {
+    if (checkedUserIds.value.length === 0) {
+        ElMessage.error("请选择要删除的用户")
+        return
+    }
+    const params = {
+        userIds: checkedUserIds.value
+    }
+    console.log(params.userIds);
+    api.userDelete(params).then((res) => {
+        if (res.nModified > 0) {
+            ElMessage.success("批量删除成功")
+            getUserList()
+        } else {
+            ElMessage.error("批量删除失败")
+        }
+    })
 }
 </script>
 
