@@ -2,7 +2,7 @@
     <div class="user-manager">
         <!-- 查询用户表单 -->
         <div class="query-form">
-            <el-form inline :model="user" ref="form">
+            <el-form inline :model="user" ref="formRef">
                 <el-form-item label="用户ID" prop="userId">
                     <el-input v-model="user.userId" placeholder="请输入用户ID" />
                 </el-form-item>
@@ -50,7 +50,7 @@ import { reactive, ref, onMounted } from "vue";
 import api from "../api";
 import util from "../utils/util"
 // 表单引用
-const form = ref();
+const formRef = ref();
 // 查询信息
 const user = reactive({
     state: 0
