@@ -26,7 +26,7 @@
         <!-- 用户列表表格 -->
         <div class="base-table">
             <div class="action">
-                <el-button type="primary">新增用户</el-button>
+                <el-button type="primary" @click="showModel = true">新增用户</el-button>
                 <el-button type="danger" @click="multiDalete">批量删除</el-button>
             </div>
             <el-table stripe :data="userList" style="width:100%" ref="multiTableRef" @selection-change="handleSelectionChange">
@@ -41,6 +41,47 @@
             </el-table>
             <el-pagination class="pagination" small layout="prev, pager, next" :page-size="pager.pageSize" :total="pager.total || 0" @current-change="handleCurrentChange" hide-on-single-page />
         </div>
+        <!-- 用户新增弹框 -->
+        <el-dialog v-model="showModel" title="用户新增">
+            <el-form ref="dialogForm" :model="addUserForm" label-width="20%" :rules="rules">
+                <el-form-item label="用户名" prop="userName">
+                    <el-input v-model="addUserForm.userName" placeholder="请输入用户名称" :disabled="action === 'edit'" />
+                </el-form-item>
+                <el-form-item label="邮箱" prop="userEmail">
+                    <el-input v-model="addUserForm.userEmail" placeholder="请输入用户邮箱" :disabled="action === 'edit'">
+                        <template #append>@163.com</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="mobile">
+                    <el-input v-model="addUserForm.mobile" placeholder="请输入手机号" />
+                </el-form-item>
+                <el-form-item label="岗位" prop="job">
+                    <el-input v-model="addUserForm.job" placeholder="请输入岗位" />
+                </el-form-item>
+                <el-form-item label="状态" prop="state">
+                    <el-select v-model="addUserForm.state">
+                        <el-option :value="1" label="在职"></el-option>
+                        <el-option :value="2" label="离职"></el-option>
+                        <el-option :value="3" label="试用期"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="系统角色" prop="roleList">
+                    <el-select v-model="addUserForm.roleList" placeholder="请选择用户系统角色" multiple>
+                        <el-optioin v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id"></el-optioin>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="部门" prop="deptId">
+                    <el-cascader v-model="addUserForm.deptId" placeholder="请选择所属部门" :options="deptList" :props="{ checkStrictly: true, value: '_id', label: 'deptName' }" clearable style="width:90%">
+                    </el-cascader>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="showModel = false">取消</el-button>
+                    <el-button type="primary" @click="handleAddUser">确定</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -189,8 +230,59 @@ function multiDalete() {
         }
     })
 }
+// 新增用户对话框是否显示
+const showModel = ref(false);
+// 所有角色列表
+const roleList = ref([]);
+// 所有部门列表
+const deptList = ref([]);
+// 对话框表单属性值
+const addUserForm = reactive({
+    state: 2
+});
+// 校验规则
+const rules = reactive({
+    userName: [
+        {
+            required: true,
+            message: "请输入用户名称",
+            trigger: "blur",
+        },
+    ],
+    userEmail: [
+        {
+            required: true,
+            message: "请输入用户邮箱",
+            trigger: "blur"
+        }
+    ],
+    mobile: [
+        {
+            pattern: /1[3-9]\d{9}/,
+            message: "请输入正确的手机号格式",
+            trigger: "blur",
+        },
+    ],
+    deptId: [
+        {
+            required: true,
+            message: "请输入用户邮箱",
+            trigger: "blur",
+        },
+    ],
+});
+// 定义用户操作行为
+const action = ref("add");
+// 点击确定新增用户按钮触发函数
+function handleAddUser() {
+    showModel.value = false
+}
 </script>
 
 <style lang="scss" scoped>
-
+.el-dialog {
+    .el-form-item *:first-child {
+        width: 90%;
+    }
+}
 </style>
