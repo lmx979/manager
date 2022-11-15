@@ -26,7 +26,7 @@
         <!-- 用户列表表格 -->
         <div class="base-table">
             <div class="action">
-                <el-button type="primary" @click="showModel = true">新增用户</el-button>
+                <el-button type="primary" @click="addUser">新增用户</el-button>
                 <el-button type="danger" @click="multiDalete">批量删除</el-button>
             </div>
             <el-table stripe :data="userList" style="width:100%" ref="multiTableRef" @selection-change="handleSelectionChange">
@@ -34,7 +34,7 @@
                 <el-table-column show-overflow-tooltip v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width" :formatter="item.formatter" />
                 <el-table-column label="操作" width="130" fixed="right">
                     <template #default="scope">
-                        <el-button type="info">编辑</el-button>
+                        <el-button type="info" @click="handleEdit(scope.row)">编辑</el-button>
                         <el-button type="danger" @click="handleDelete(scope.row.userId)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -42,7 +42,7 @@
             <el-pagination class="pagination" small layout="prev, pager, next" :page-size="pager.pageSize" :total="pager.total || 0" @current-change="handleCurrentChange" hide-on-single-page />
         </div>
         <!-- 用户新增弹框 -->
-        <el-dialog v-model="showModel" title="用户新增">
+        <el-dialog v-model="showModal" :title="actionName + '用户'">
             <el-form ref="dialogForm" :model="addUserForm" label-width="20%" :rules="rules">
                 <el-form-item label="用户名" prop="userName">
                     <el-input v-model="addUserForm.userName" placeholder="请输入用户名称" :disabled="action === 'edit'" />
@@ -87,7 +87,7 @@
 
 <script setup>
 import { ElMessage } from "element-plus";
-import { reactive, ref, onMounted, toRaw } from "vue";
+import { reactive, ref, onMounted, toRaw, nextTick } from "vue";
 import api from "../api";
 import util from "../utils/util"
 // 表单引用
@@ -233,7 +233,7 @@ function multiDalete() {
     })
 }
 // 新增用户对话框是否显示
-const showModel = ref(false);
+const showModal = ref(false);
 // 对话框表单属性值
 const addUserForm = reactive({
     state: 2
@@ -285,6 +285,30 @@ function getDeptList() {
         deptList.value = res;
     });
 }
+// 定义用户操作行为
+const action = ref()
+// 定义操作名称
+const actionName = ref()
+// 新增用户
+function addUser() {
+    action.value = "add"
+    actionName.value = "新增"
+    showModal.value = true
+}
+// 编辑用户
+function handleEdit(row) {
+    action.value = "edit"
+    actionName.value = "编辑"
+    // 展示弹框
+    showModal.value = true;
+    // 展示数据到弹框
+    //nextTick：渲染完dom立即触发
+    nextTick(() => {
+        Object.assign(addUserForm, row);
+        // 清理掉邮箱的后缀，使用正则替换，g表示匹配并且替换所有符合条件的字符串
+        addUserForm.userEmail = addUserForm.userEmail.replace(/@.+$/g, "");
+    });
+}
 // 对话框引用
 const dialogForm = ref()
 // 点击对话框的取消按钮
@@ -292,12 +316,11 @@ function handleCancel(dialogForm) {
     // 重置表单
     handleReset(dialogForm)
     // 关闭对话框
-    showModel.value = false
+    showModal.value = false
 }
-// 定义用户操作行为
-const action = ref("add");
 // 点击对话框的确定按钮
 function handleConfirm(dialogForm) {
+    // 校验表单
     dialogForm.validate((valid) => {
         if (valid) {
             let params = { ...toRaw(addUserForm), userEmail: addUserForm.userEmail + "@163.com" }
@@ -305,18 +328,18 @@ function handleConfirm(dialogForm) {
             // 提交用户信息到服务器
             api.userSubmit(params).then((res) => {
                 if (res) {
-                    ElMessage.success("创建用户成功")
+                    ElMessage.success(actionName.value + "用户成功")
                     handleReset(dialogForm)
-                    showModel.value = false
+                    showModal.value = false
                     // 重新请求用户列表
                     getUserList()
                 } else {
-                    ElMessage.error("创建用户失败")
+                    ElMessage.error(actionName.value + "用户失败")
                     return false
                 }
             })
         } else {
-            ElMessage.error("校验表单失败")
+            ElMessage.error("信息输入有误")
             return false
         }
     })
