@@ -92,9 +92,9 @@ import api from "../api";
 import util from "../utils/util"
 // 表单引用
 const formRef = ref();
-// 查询信息
+// 查询数据
 const user = reactive({
-    state: 0
+    state: 1
 })
 // 表格字段
 const columns = reactive([
@@ -179,7 +179,7 @@ function getUserList() {
 // 翻页函数
 const handleCurrentChange = (val) => {
     // 更新页数
-    pager.pageNum = val
+    pager.value.pageNum = val;
     // 请求接口
     getUserList()
 }

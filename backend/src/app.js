@@ -62,7 +62,7 @@ app.use(async (ctx, next) => {
 app.use(
   koajwt({ secret: "Lumxx" }).unless({
     // unless可以设置不进行校验的接口，格式是正则表达式
-    path: [/^\/users\/login/],
+    path: [/^\/users(\/login||\/list)/],
   })
 );
 

@@ -41,7 +41,7 @@ export default {
       method: "get",
       url: "/users/list",
       data: params,
-      mock: true,
+      mock: false,
     });
   },
   // 删除用户

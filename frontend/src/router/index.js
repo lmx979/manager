@@ -57,15 +57,6 @@ const routes = [
       title: "登录页",
     },
   },
-  // 注册页
-  {
-    name: "Register",
-    path: "/register",
-    component: () => import("../views/Register.vue"),
-    meta: {
-      title: "注册页",
-    },
-  },
 ];
 
 // 创建路由并导出
