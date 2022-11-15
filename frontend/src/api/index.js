@@ -53,4 +53,31 @@ export default {
       mock: true,
     });
   },
+  // 获取角色名称列表
+  getRoleList() {
+    return request({
+      method: "get",
+      url: "/roles/list",
+      data: {},
+      mock: true,
+    });
+  },
+  // 获取部门列表
+  getDeptList(params) {
+    return request({
+      method: "get",
+      url: "/dept/list",
+      data: params,
+      mock: true,
+    });
+  },
+  // 提交用户信息
+  userSubmit(params) {
+    return request({
+      method: "post",
+      url: "/users/operate",
+      data: params,
+      mock: true,
+    });
+  },
 };

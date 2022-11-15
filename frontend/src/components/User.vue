@@ -67,7 +67,7 @@
                 </el-form-item>
                 <el-form-item label="系统角色" prop="roleList">
                     <el-select v-model="addUserForm.roleList" placeholder="请选择用户系统角色" multiple>
-                        <el-optioin v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id"></el-optioin>
+                        <el-option v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="部门" prop="deptId">
@@ -77,8 +77,8 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showModel = false">取消</el-button>
-                    <el-button type="primary" @click="handleAddUser">确定</el-button>
+                    <el-button @click="handleCancel(dialogForm)">取消</el-button>
+                    <el-button type="primary" @click="handleConfirm(dialogForm)">确定</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -87,7 +87,7 @@
 
 <script setup>
 import { ElMessage } from "element-plus";
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, toRaw } from "vue";
 import api from "../api";
 import util from "../utils/util"
 // 表单引用
@@ -156,7 +156,9 @@ const columns = reactive([
 ])
 // 组件挂载后触发
 onMounted(() => {
-    getUserList();
+    getUserList()
+    getDeptList()
+    getRoleList()
 })
 // 用户列表
 const userList = ref([])
@@ -232,10 +234,6 @@ function multiDalete() {
 }
 // 新增用户对话框是否显示
 const showModel = ref(false);
-// 所有角色列表
-const roleList = ref([]);
-// 所有部门列表
-const deptList = ref([]);
 // 对话框表单属性值
 const addUserForm = reactive({
     state: 2
@@ -271,11 +269,57 @@ const rules = reactive({
         },
     ],
 });
+// 所有角色列表
+const roleList = ref([]);
+// 获取角色列表
+function getRoleList() {
+    api.getRoleList().then((res) => {
+        roleList.value = res;
+    });
+}
+// 所有部门列表
+const deptList = ref([]);
+// 获取部门列表
+function getDeptList() {
+    api.getDeptList().then((res) => {
+        deptList.value = res;
+    });
+}
+// 对话框引用
+const dialogForm = ref()
+// 点击对话框的取消按钮
+function handleCancel(dialogForm) {
+    // 重置表单
+    handleReset(dialogForm)
+    // 关闭对话框
+    showModel.value = false
+}
 // 定义用户操作行为
 const action = ref("add");
-// 点击确定新增用户按钮触发函数
-function handleAddUser() {
-    showModel.value = false
+// 点击对话框的确定按钮
+function handleConfirm(dialogForm) {
+    dialogForm.validate((valid) => {
+        if (valid) {
+            let params = { ...toRaw(addUserForm), userEmail: addUserForm.userEmail + "@163.com" }
+            params.action = action.value
+            // 提交用户信息到服务器
+            api.userSubmit(params).then((res) => {
+                if (res) {
+                    ElMessage.success("创建用户成功")
+                    handleReset(dialogForm)
+                    showModel.value = false
+                    // 重新请求用户列表
+                    getUserList()
+                } else {
+                    ElMessage.error("创建用户失败")
+                    return false
+                }
+            })
+        } else {
+            ElMessage.error("校验表单失败")
+            return false
+        }
+    })
 }
 </script>
 
