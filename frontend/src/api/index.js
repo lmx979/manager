@@ -14,7 +14,6 @@ export default {
       method: "post", // 请求方法
       url: "/users/login", // 请求路径
       data: params, // 携带数据
-      mock: false, // 局部mock设置，优先级更高，是否走mock接口
     });
   },
   // 导出菜单列表
@@ -41,7 +40,6 @@ export default {
       method: "get",
       url: "/users/list",
       data: params,
-      mock: false,
     });
   },
   // 删除用户

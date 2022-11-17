@@ -9,13 +9,13 @@
                 <div class="title">后台管理系统</div>
                 <!-- 表单元素 -->
                 <el-form-item prop="userName">
-                    <el-input type="text" :prefix-icon="User" v-model="user.userName" />
+                    <el-input type="text" :prefix-icon="User" v-model="user.userName" size="large" />
                 </el-form-item>
                 <el-form-item prop="userPassword">
-                    <el-input type="password" :prefix-icon="View" v-model="user.userPassword" />
+                    <el-input type="password" :prefix-icon="View" v-model="user.userPassword" size="large" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" class="btn-login" @click="login(userFormRef)">登录</el-button>
+                    <el-button type="primary" class="btn-login" @click="login(userFormRef)" size="large">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>

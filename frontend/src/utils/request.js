@@ -78,16 +78,19 @@ function request(options) {
     // 传参时都传递data，虽然get需要的是param，可以进行转换
     options.params = options.data;
   }
+  // 定义一个单独的变量，来专门处理mock的配置，默认值就是全局的mock配置
+  let isMock = config.mock;
   // 局部设置mock
   if (typeof options.mock !== "undefined") {
-    config.mock = options.mock;
+    // 修改单独的变量
+    isMock = options.mock;
   }
   // 如果是生成环境，一定要调线上的正式的api
   if (config.env === "prod") {
     service.defaults.baseURL = config.baseApi;
   } else {
-    // 判断是否开启了mock
-    service.defaults.baseURL = config.mock ? config.mockApi : config.baseApi;
+    // 判断单独的变量是否开启了mock
+    service.defaults.baseURL = isMock ? config.mockApi : config.baseApi;
   }
   return service(options);
 }
