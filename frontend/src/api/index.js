@@ -48,7 +48,6 @@ export default {
       method: "delete",
       url: "/users/delete",
       data: params,
-      mock: true,
     });
   },
   // 获取角色名称列表

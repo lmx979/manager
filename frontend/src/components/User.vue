@@ -35,7 +35,7 @@
                 <el-table-column label="操作" width="130" fixed="right">
                     <template #default="scope">
                         <el-button type="info" @click="handleEdit(scope.row)">编辑</el-button>
-                        <el-button type="danger" @click="handleDelete(scope.row.userId)">删除</el-button>
+                        <el-button type="danger" @click="handleDelete(scope.row.userId)" :disabled="scope.row.state === 2">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -174,6 +174,9 @@ function getUserList() {
         // 更新数据
         userList.value = list
         pager.value = page
+        if (list.length === 0) {
+            ElMessage.error("暂无数据")
+        }
     })
 }
 // 翻页函数
@@ -193,16 +196,6 @@ function handleReset(form) {
     form.resetFields()
     getUserList()
 }
-// 删除用户
-function handleDelete(userId) {
-    const params = [userId]
-    api.userDelete(params).then((res) => {
-        if (res.nModified === 1) {
-            // 重新获取用户列表
-            getUserList()
-        }
-    })
-}
 // 选中的用户id
 const checkedUserIds = ref([])
 // 点击复选框触发函数
@@ -214,18 +207,29 @@ const handleSelectionChange = (val) => {
     })
     checkedUserIds.value = arr
 };
+// 删除用户
+function handleDelete(userId) {
+    // 通过id删除用户
+    const params = { userIds: [userId] }
+    api.userDelete(params).then((res) => {
+        console.log(res);
+        if (res.nModified === 1) {
+            ElMessage.success("删除成功")
+            // 重新获取用户列表
+            getUserList()
+        }
+    })
+}
 // 批量删除用户
 function multiDalete() {
     if (checkedUserIds.value.length === 0) {
         ElMessage.error("请选择要删除的用户")
         return
     }
-    const params = {
-        userIds: checkedUserIds.value
-    }
+    const params = { userIds: checkedUserIds.value }
     api.userDelete(params).then((res) => {
         if (res.nModified > 0) {
-            ElMessage.success("批量删除成功")
+            ElMessage.success(`批量删除成功，共删除${res.nModified}条`)
             getUserList()
         } else {
             ElMessage.error("批量删除失败")

@@ -5,7 +5,7 @@
  */
 
 const router = require("koa-router")();
-const { login, userList } = require("../controller/users");
+const { login, userList, userDelete } = require("../controller/users");
 const util = require("../utils/util");
 // 引入jwt
 const jwt = require("jsonwebtoken");
@@ -75,6 +75,24 @@ router.get("/list", async (ctx) => {
     }
   } catch (error) {
     ctx.body = util.fail("查询异常" + error);
+  }
+});
+
+// 用户删除/批量删除
+router.delete("/delete", async (ctx) => {
+  try {
+    // 待删除的用户id数组
+    const { userIds } = ctx.request.body;
+    // 批量删除（逻辑删除，就是批量更新）
+    const result = await userDelete(userIds);
+    // 判断删除条数，如果有数字，说明删除成功；如果没有数字，说明删除失败
+    if (result) {
+      ctx.body = util.success({ nModified: result }, `共删除成功${result}条`);
+    } else {
+      ctx.body = util.fail("删除失败");
+    }
+  } catch (error) {
+    ctx.body = util.fail("删除操作异常" + error);
   }
 });
 

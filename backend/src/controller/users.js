@@ -26,7 +26,7 @@ async function userList(userParams, pageParams) {
   // countDocuments查询总共有多少条数据
   const total = await User.countDocuments(userParams);
   // 返回数据
-  if (list && total) {
+  if (list !== undefined && total !== undefined) {
     return {
       page: {
         ...page,
@@ -38,5 +38,17 @@ async function userList(userParams, pageParams) {
     return false;
   }
 }
+// 删除用户列表
+async function userDelete(userIds) {
+  // 逻辑删除（将状态设置为“离职”）
+  const result = await User.updateMany({ userId: { $in: userIds } }, { state: 2 });
+  // 判断更新的条数
+  if (result.modifiedCount) {
+    const deleteNumber = result.modifiedCount;
+    return deleteNumber;
+  } else {
+    return false;
+  }
+}
 // 导出
-module.exports = { login, userList };
+module.exports = { login, userList, userDelete };
