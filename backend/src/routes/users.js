@@ -5,14 +5,12 @@
  */
 
 const router = require("koa-router")();
-const { login, userList, userDelete } = require("../controller/users");
+const { login, userList, userDelete, userUnique } = require("../controller/users");
 const util = require("../utils/util");
 // 引入jwt
 const jwt = require("jsonwebtoken");
-
 // 路由前缀
 router.prefix("/users");
-
 // 登录post请求
 router.post("/login", async (ctx) => {
   try {
@@ -34,7 +32,6 @@ router.post("/login", async (ctx) => {
     ctx.body = util.fail("error.msg");
   }
 });
-
 // 获取用户列表get请求
 router.get("/list", async (ctx) => {
   // 进行查询
@@ -77,7 +74,6 @@ router.get("/list", async (ctx) => {
     ctx.body = util.fail("查询异常" + error);
   }
 });
-
 // 用户删除/批量删除
 router.delete("/delete", async (ctx) => {
   try {
@@ -95,5 +91,21 @@ router.delete("/delete", async (ctx) => {
     ctx.body = util.fail("删除操作异常" + error);
   }
 });
-
+// 用户新增/编辑
+router.post("/operate", async (ctx) => {
+  // 从请求体中获取所有参数，再进行参数的验证
+  const { userId, userName, userEmail, mobile, job, state, roleList, deptId, action } = ctx.request.body;
+  // 判断是新增还是编辑
+  if (action === "add") {
+    // 查重，新增用户名不可重复
+    const res = await userUnique(userName, userEmail);
+    if (res) {
+      ctx.body = util.fail("用户名重复，已存在该用户");
+      return;
+    }
+  }
+  if (action === "edit") {
+  }
+});
+// 导出
 module.exports = router;

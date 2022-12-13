@@ -74,7 +74,6 @@ export default {
       method: "post",
       url: "/users/operate",
       data: params,
-      mock: true,
     });
   },
 };

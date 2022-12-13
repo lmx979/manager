@@ -50,5 +50,10 @@ async function userDelete(userIds) {
     return false;
   }
 }
+// 用户查重
+async function userUnique(userName, userEmail) {
+  const res = await User.findOne({ $or: [{ userName }, { userEmail }] }, "_id userName userEmail");
+  return res;
+}
 // 导出
-module.exports = { login, userList, userDelete };
+module.exports = { login, userList, userDelete, userUnique };
