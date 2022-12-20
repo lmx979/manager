@@ -27,6 +27,10 @@
   },
   "devDependencies": {
     "log4js": "^6.7.0",
+<<<<<<< HEAD
     "nodemon": "^1.19.4"
+=======
+    "nodemon": "^1.19.1"
+>>>>>>> 0e71a1244abe57e506ed2854f3af618ff09895cb
   }
 }

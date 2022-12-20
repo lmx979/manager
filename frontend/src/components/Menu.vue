@@ -19,6 +19,11 @@
 
 <script setup>
 import Menu from "./Menu.vue"
+<<<<<<< HEAD
+=======
+// 定义接收属性
+import { defineProps } from "vue";
+>>>>>>> 0e71a1244abe57e506ed2854f3af618ff09895cb
 // 定义从父组件接收的属性
 const menuData = defineProps({
     menuList: { type: Array }
