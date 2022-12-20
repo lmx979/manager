@@ -5,8 +5,9 @@
  */
 
 const router = require("koa-router")();
-const { login, userList, userDelete, userUnique } = require("../controller/users");
+const { login, userList, userDelete, userUnique, getUserSequenceId, userAdd } = require("../controller/users");
 const util = require("../utils/util");
+const md5 = require("md5");
 // 引入jwt
 const jwt = require("jsonwebtoken");
 // 路由前缀
@@ -16,6 +17,8 @@ router.post("/login", async (ctx) => {
   try {
     // 获取用户信息
     const { userName, userPassword } = ctx.request.body;
+    // 密码md5加密
+    userPassword = md5(userPassword);
     // 使用控制器验证登录
     let result = await login(userName, userPassword);
     // 生成并返回token，参数1是数据，参数2是密钥，参数3是过期时间（1h表示1天）
@@ -102,6 +105,31 @@ router.post("/operate", async (ctx) => {
     if (res) {
       ctx.body = util.fail("用户名重复，已存在该用户");
       return;
+    }
+    // 没有问题, 就创建新用户，先从自增表中, 拿到最新的id
+    const sequenceId = await getUserSequenceId();
+    try {
+      // 创建对象, 密码使用md5加密
+      const userParams = {
+        userId: sequenceId,
+        userName,
+        userPassword: md5("123456"),
+        userEmail,
+        role: 1, // 默认普通用户
+        roleList,
+        job,
+        state,
+        deptId,
+        mobile,
+      };
+      const userAddResult = await userAdd(userParams);
+      if (userAddResult) {
+        ctx.body = util.success({ userId: userAddResult.userId }, "用户创建成功");
+      } else {
+        ctx.body = util.fail("用户创建失败");
+      }
+    } catch (error) {
+      ctx.body = util.fail(error.stack);
     }
   }
   if (action === "edit") {
