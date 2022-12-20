@@ -71,5 +71,11 @@ async function userAdd(params) {
   const userInfo = await user.save();
   return userInfo ? userInfo : false;
 }
+// 编辑用户
+async function userEdit(userId, params) {
+  // 找到用户信息进行更新, 返回最新的数据
+  const result = await User.findOneAndUpdate({ userId }, params, { new: true });
+  return result ? result : false;
+}
 // 导出
-module.exports = { login, userList, userDelete, userUnique, getUserSequenceId, userAdd };
+module.exports = { login, userList, userDelete, userUnique, getUserSequenceId, userAdd, userEdit };

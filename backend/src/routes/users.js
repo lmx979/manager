@@ -5,7 +5,7 @@
  */
 
 const router = require("koa-router")();
-const { login, userList, userDelete, userUnique, getUserSequenceId, userAdd } = require("../controller/users");
+const { login, userList, userDelete, userUnique, getUserSequenceId, userAdd, userEdit } = require("../controller/users");
 const util = require("../utils/util");
 const md5 = require("md5");
 // 引入jwt
@@ -133,6 +133,14 @@ router.post("/operate", async (ctx) => {
     }
   }
   if (action === "edit") {
+    const editParams = { mobile, job, state, roleList, deptId };
+    // 通过查询userId, 更新用户信息
+    const res = await userEdit(userId, editParams);
+    if (res) {
+      ctx.body = util.success({ userId: res.userId }, "更新成功");
+    } else {
+      ctx.body = util.fail("更新失败");
+    }
   }
 });
 // 导出
